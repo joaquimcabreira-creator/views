@@ -1,0 +1,46 @@
+CREATE TABLE CLIENTE (
+  ID INT AUTO_INCREMENT PRIMARY KEY,
+  NOME_COMPLETO VARCHAR(255) NOT NULL,
+  CIDADE VARCHAR(255) NOT NULL,
+  ESTADO CHAR(2) NOT NULL
+);
+
+
+CREATE TABLE PEDIDO (
+ ID INT AUTO_INCREMENT PRIMARY KEY,
+ CLIENTE_ID INT,
+ DATA_PEDIDO DATETIME  DEFAULT CURRENT_TIMESTAMP,
+ VALOR DECIMAL(10.2),
+ FOREIGN KEY (CLIENTE_ID) REFERENCES CLIENTE(ID)
+
+
+);
+
+INSERT INTO CLIENTE (NOME_COMPLETO, CIDADE, ESTADO) VALUES
+("Mariana Alves Teixeira", "Curitiba", "PR"),
+("João Victor Nogueira", "Uberlândia", "MG"),
+("Beatriz Martins Rocha", "Rondonópolis", "MT"),
+("Felipe Costa Moreira", "Anápolis", "GO"),
+("Isabela Fernandes Lima", "Londrina", "PR");
+
+
+INSERT INTO PEDIDO ( CLIENTE_ID,  VALOR ) VALUES
+
+(1,  150.00),
+(2,  320.50),
+(3,  89.90),
+(4,  500.00),
+(5,  210.00);
+
+
+CREATE OR REPLACE VIEW vw_pedido_cliente AS
+SELECT
+    c.nome_completo AS nome_cliente,  
+    p.valor AS valor_pedido,
+    p.data_pedido AS data_pedido      
+FROM pedido p
+JOIN cliente c ON p.cliente_id = c.id;
+
+
+SELECT * FROM vw_pedido_cliente;
+
