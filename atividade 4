@@ -1,0 +1,48 @@
+CREATE TABLE CLIENTE (
+  ID INT AUTO_INCREMENT PRIMARY KEY,
+  NOME_COMPLETO VARCHAR(255) NOT NULL,
+  CIDADE VARCHAR(255) NOT NULL,
+  ESTADO CHAR(2) NOT NULL
+);
+
+CREATE TABLE PEDIDO(
+  ID INT AUTO_INCREMENT PRIMARY KEY,
+  CLIENTE_ID INT,
+  DATA_PEDIDO DATETIME DEFAULT CURRENT_TIMESTAMP,
+  VALOR DECIMAL(10.2) NOT NULL,
+  FOREIGN KEY (CLIENTE_ID) REFERENCES CLIENTE(ID)
+);
+
+INSERT INTO CLIENTE (NOME_COMPLETO , CIDADE, ESTADO) VALUES
+("Ana Silva", "Curitiba", "PR"),
+("Bruno Costa", "Maringá", "PR"),
+("Carla Souza", "São Paulo", "SP"),
+("Diego Lima", "Ponta Grossa", "PR"),
+("Elaine Rocha", "Florianópolis", "SC");
+
+INSERT INTO PEDIDO (CLIENTE_ID, VALOR) VALUES
+(1,  150.00),
+(1,  90.00),
+(2,  320.50),
+(2,  45.00),
+(3,  89.90),
+(3,  300.00),
+(4,  500.00),
+(4,  60.00),
+(5,  210.00),
+(5,  175.00);
+
+CREATE VIEW vw_total_cliente AS
+SELECT
+    c.nome_completo AS nome_cliente,
+    COUNT(p.id) AS quantidade_pedidos,
+    SUM(p.valor) AS valor_total_gasto
+FROM cliente c
+JOIN pedido p ON p.cliente_id = c.id
+GROUP BY c.id, c.nome_completo;
+
+
+select*from vw_total_cliente;
+
+
+ 
